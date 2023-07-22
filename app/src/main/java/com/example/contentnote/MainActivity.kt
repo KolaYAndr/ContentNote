@@ -11,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.Modifier
 import com.example.contentnote.navigation.NotesNavHost
 import com.example.contentnote.ui.theme.ContentNoteTheme
@@ -23,7 +24,8 @@ class MainActivity : ComponentActivity() {
             ContentNoteTheme {
                 Scaffold(topBar = {
                     TopAppBar(
-                        title = { Text(text = "C.Note") }
+                        title = { Text(text = "C.Note") },
+                        scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
                     )
                 },
                     content = {
