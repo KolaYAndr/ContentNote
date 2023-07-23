@@ -26,7 +26,7 @@ fun NoteScreen(navController: NavHostController) {
         Card(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(vertical = 8.dp, horizontal = 2.dp)
+                .padding(vertical = 8.dp, horizontal = 4.dp)
         ) {
             Column(
                 modifier = Modifier.padding(vertical = 8.dp, horizontal = 4.dp),
