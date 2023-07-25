@@ -23,14 +23,16 @@ import com.example.contentnote.navigation.NavRoute
 import com.example.contentnote.ui.theme.ContentNoteTheme
 import com.example.contentnote.ui.theme.MainViewModel
 import com.example.contentnote.ui.theme.MainViewModelFactory
+import com.example.contentnote.utils.Constants.Keys.FIREBASE_DATABASE
+import com.example.contentnote.utils.Constants.Keys.ROOM_DATABASE
+import com.example.contentnote.utils.Constants.Keys.WHAT_WILL_WE_USE
 import com.example.contentnote.utils.TYPE_FIREBASE
 import com.example.contentnote.utils.TYPE_ROOM
 
 @ExperimentalMaterial3Api
 @Composable
-fun StartScreen(navController: NavHostController) {
+fun StartScreen(navController: NavHostController, mainViewModel: MainViewModel) {
     val context = LocalContext.current
-    val mainViewModel: MainViewModel = viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
 
     Scaffold(
         modifier = Modifier.fillMaxSize()
@@ -42,7 +44,7 @@ fun StartScreen(navController: NavHostController) {
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "What will we use?",
+                text = WHAT_WILL_WE_USE,
                 modifier = Modifier.padding(bottom = 10.dp)
             )
             Button(
@@ -55,7 +57,7 @@ fun StartScreen(navController: NavHostController) {
                     .width(200.dp)
 
             ) {
-                Text(text = "Room database")
+                Text(text = ROOM_DATABASE)
             }
             Button(
                 onClick = {
@@ -66,7 +68,7 @@ fun StartScreen(navController: NavHostController) {
                 modifier = Modifier
                     .width(200.dp)
             ) {
-                Text(text = "Firebase database")
+                Text(text = FIREBASE_DATABASE)
             }
         }
     }
@@ -78,6 +80,9 @@ fun StartScreen(navController: NavHostController) {
 @Composable
 fun PreviewStartScreen() {
     ContentNoteTheme {
-        StartScreen(navController = rememberNavController())
+        val context = LocalContext.current
+        val mainViewModel: MainViewModel =
+            viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
+        StartScreen(navController = rememberNavController(), mainViewModel)
     }
 }

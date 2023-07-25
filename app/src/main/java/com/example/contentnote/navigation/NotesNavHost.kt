@@ -9,22 +9,29 @@ import com.example.contentnote.screens.AddScreen
 import com.example.contentnote.screens.MainScreen
 import com.example.contentnote.screens.NoteScreen
 import com.example.contentnote.screens.StartScreen
+import com.example.contentnote.ui.theme.MainViewModel
+import com.example.contentnote.utils.Constants
+import com.example.contentnote.utils.Constants.Screens.ADD_SCREEN
+import com.example.contentnote.utils.Constants.Screens.MAIN_SCREEN
+import com.example.contentnote.utils.Constants.Screens.NOTE_SCREEN
+import com.example.contentnote.utils.Constants.Screens.START_SCREEN
 
 sealed class NavRoute(val route: String) {
-    object Start : NavRoute("start_screen")
-    object Main : NavRoute("main_screen")
-    object Add : NavRoute("add_screen")
-    object Note : NavRoute("note_screen")
+    object Start : NavRoute(START_SCREEN)
+    object Main : NavRoute(MAIN_SCREEN)
+    object Add : NavRoute(ADD_SCREEN)
+    object Note : NavRoute(NOTE_SCREEN)
 }
 @ExperimentalMaterial3Api
 @Composable
-fun NotesNavHost() {
+fun NotesNavHost(mainViewModel: MainViewModel) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = NavRoute.Start.route) {
-        composable(NavRoute.Start.route) { StartScreen(navController) }
-        composable(NavRoute.Main.route) { MainScreen(navController) }
-        composable(NavRoute.Add.route) { AddScreen(navController) }
-        composable(NavRoute.Note.route) { NoteScreen(navController) }
+        composable(NavRoute.Start.route) { StartScreen(navController = navController, mainViewModel = mainViewModel) }
+        composable(NavRoute.Main.route) { MainScreen(navController = navController, mainViewModel = mainViewModel) }
+        composable(NavRoute.Add.route) { AddScreen(navController = navController, mainViewModel = mainViewModel) }
+        composable(NavRoute.Note.route + "/{${Constants.Keys.ID}}") {backStackEntry ->
+            NoteScreen(navController = navController, mainViewModel = mainViewModel, noteId = backStackEntry.arguments?.getString(Constants.Keys.ID)) }
     }
 }

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
@@ -34,14 +33,13 @@ import com.example.contentnote.navigation.NavRoute
 import com.example.contentnote.ui.theme.ContentNoteTheme
 import com.example.contentnote.ui.theme.MainViewModel
 import com.example.contentnote.ui.theme.MainViewModelFactory
+import androidx.compose.foundation.lazy.items
+import com.example.contentnote.utils.Constants.Keys.ADD_NEW_NOTE
 
 @ExperimentalMaterial3Api
 @Composable
-fun MainScreen(navController: NavHostController) {
-    val context = LocalContext.current
-    val mainViewModel: MainViewModel =
-        viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
-
+fun MainScreen(navController: NavHostController, mainViewModel: MainViewModel) {
+    val notes = mainViewModel.readAllNotes().observeAsState().value
 
     Scaffold(floatingActionButton = {
         FloatingActionButton(onClick = {
@@ -49,17 +47,21 @@ fun MainScreen(navController: NavHostController) {
         }) {
             Icon(
                 imageVector = Icons.Default.Add,
-                contentDescription = "Add Note",
+                contentDescription = ADD_NEW_NOTE,
                 tint = Color.White
             )
         }
     }) {
         val paddingValues = it
-//        LazyColumn {
-//            items(notes){note ->
-//                NoteItem(note = note, navController = navController)
-//            }
-//        }
+        if (notes != null) {
+            LazyColumn {
+                items(items = notes, key = { note ->
+                    note.id
+                }) { note ->
+                    NoteItem(note, navController)
+                }
+            }
+        }
     }
 }
 
@@ -70,7 +72,7 @@ private fun NoteItem(note: Note, navController: NavHostController) {
             .fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 24.dp)
             .clickable {
-                navController.navigate(route = NavRoute.Note.route)
+                navController.navigate(route = NavRoute.Note.route + "/${note.id}")
             },
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
@@ -93,6 +95,9 @@ private fun NoteItem(note: Note, navController: NavHostController) {
 @Composable
 fun PreviewMainScreen() {
     ContentNoteTheme {
-        MainScreen(navController = rememberNavController())
+        val context = LocalContext.current
+        val mainViewModel: MainViewModel =
+            viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
+        MainScreen(navController = rememberNavController(), mainViewModel)
     }
 }
