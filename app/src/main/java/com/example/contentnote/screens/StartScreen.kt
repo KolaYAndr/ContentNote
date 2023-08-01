@@ -43,6 +43,7 @@ import com.example.contentnote.utils.Constants
 import com.example.contentnote.utils.Constants.Keys.FIREBASE_DATABASE
 import com.example.contentnote.utils.Constants.Keys.ROOM_DATABASE
 import com.example.contentnote.utils.Constants.Keys.WHAT_WILL_WE_USE
+import com.example.contentnote.utils.DB_TYPE
 import com.example.contentnote.utils.LOGIN
 import com.example.contentnote.utils.PASSWORD
 import com.example.contentnote.utils.TYPE_FIREBASE
@@ -118,7 +119,9 @@ fun StartScreen(navController: NavHostController, mainViewModel: MainViewModel) 
                             LOGIN = login.value
                             PASSWORD = password.value
                             mainViewModel.initDatabase(TYPE_FIREBASE) {
+                                DB_TYPE = TYPE_FIREBASE
                                 openBottomSheet.value = false
+                                navController.navigate(NavRoute.Main.route)
                             }
                         },
                         enabled = password.value.isNotEmpty() && login.value.isNotEmpty()
@@ -147,6 +150,7 @@ fun StartScreen(navController: NavHostController, mainViewModel: MainViewModel) 
             Button(
                 onClick = {
                     mainViewModel.initDatabase(TYPE_ROOM) {
+                        DB_TYPE = TYPE_ROOM
                         navController.navigate(route = NavRoute.Main.route)
                     }
                 },
@@ -159,7 +163,6 @@ fun StartScreen(navController: NavHostController, mainViewModel: MainViewModel) 
             Button(
                 onClick = {
                     coroutineScope.launch { openBottomSheet.value = true }
-
                 },
                 modifier = Modifier
                     .width(200.dp)

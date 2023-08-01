@@ -34,7 +34,11 @@ import com.example.contentnote.ui.theme.ContentNoteTheme
 import com.example.contentnote.ui.theme.MainViewModel
 import com.example.contentnote.ui.theme.MainViewModelFactory
 import androidx.compose.foundation.lazy.items
+import com.example.contentnote.utils.Constants
 import com.example.contentnote.utils.Constants.Keys.ADD_NEW_NOTE
+import com.example.contentnote.utils.DB_TYPE
+import com.example.contentnote.utils.TYPE_FIREBASE
+import com.example.contentnote.utils.TYPE_ROOM
 
 @ExperimentalMaterial3Api
 @Composable
@@ -67,12 +71,17 @@ fun MainScreen(navController: NavHostController, mainViewModel: MainViewModel) {
 
 @Composable
 private fun NoteItem(note: Note, navController: NavHostController) {
+    val noteId = when(DB_TYPE){
+        TYPE_FIREBASE -> note.firebaseId
+        TYPE_ROOM -> note.id
+        else -> Constants.Keys.EMPTY
+    }
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 24.dp)
             .clickable {
-                navController.navigate(route = NavRoute.Note.route + "/${note.id}")
+                navController.navigate(route = NavRoute.Note.route + "/${noteId}")
             },
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {

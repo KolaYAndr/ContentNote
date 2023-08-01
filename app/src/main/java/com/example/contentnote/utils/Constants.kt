@@ -5,10 +5,12 @@ import com.example.contentnote.database.DatabaseRepository
 const val TYPE_DATABASE = "type_database"
 const val TYPE_ROOM = "type_room"
 const val TYPE_FIREBASE = "type_firebase"
+const val FIREBASE_ID = "firebaseId"
 
 lateinit var REPOSITORY: DatabaseRepository
 lateinit var LOGIN: String
 lateinit var PASSWORD: String
+lateinit var DB_TYPE: String
 
 
 object Constants {
@@ -17,7 +19,9 @@ object Constants {
         const val NOTES_TABLE = "notes_table"
         const val ADD_NEW_NOTE = "Add a new note"
         const val NOTE_TITLE = "Note title"
+        const val TITLE = "title"
         const val NOTE_SUBTITLE = "Note subtitle"
+        const val SUBTITLE = "subtitle"
         const val SAVE_NOTE = "Save a note"
         const val WHAT_WILL_WE_USE = "What will we use?"
         const val ROOM_DATABASE = "Room database"
