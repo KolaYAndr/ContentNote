@@ -1,8 +1,8 @@
 package com.example.contentnote.utils
 
+import androidx.compose.runtime.mutableStateOf
 import com.example.contentnote.database.DatabaseRepository
 
-const val TYPE_DATABASE = "type_database"
 const val TYPE_ROOM = "type_room"
 const val TYPE_FIREBASE = "type_firebase"
 const val FIREBASE_ID = "firebaseId"
@@ -10,8 +10,7 @@ const val FIREBASE_ID = "firebaseId"
 lateinit var REPOSITORY: DatabaseRepository
 lateinit var LOGIN: String
 lateinit var PASSWORD: String
-lateinit var DB_TYPE: String
-
+var DB_TYPE = mutableStateOf(Constants.Keys.EMPTY)
 
 object Constants {
     object Keys {
@@ -27,7 +26,6 @@ object Constants {
         const val ROOM_DATABASE = "Room database"
         const val FIREBASE_DATABASE = "Firebase database"
         const val ID = "Id"
-        const val NONE = "None"
         const val EDIT_NOTE = "Edit note"
         const val EMPTY = ""
         const val UPDATE_NOTE = "Update note"

@@ -2,9 +2,9 @@ package com.example.contentnote.navigation
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.contentnote.screens.AddScreen
 import com.example.contentnote.screens.MainScreen
 import com.example.contentnote.screens.NoteScreen
@@ -24,9 +24,7 @@ sealed class NavRoute(val route: String) {
 }
 @ExperimentalMaterial3Api
 @Composable
-fun NotesNavHost(mainViewModel: MainViewModel) {
-    val navController = rememberNavController()
-
+fun NotesNavHost(mainViewModel: MainViewModel, navController: NavHostController) {
     NavHost(navController = navController, startDestination = NavRoute.Start.route) {
         composable(NavRoute.Start.route) { StartScreen(navController = navController, mainViewModel = mainViewModel) }
         composable(NavRoute.Main.route) { MainScreen(navController = navController, mainViewModel = mainViewModel) }

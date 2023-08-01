@@ -10,6 +10,8 @@ import com.example.contentnote.database.firebase.AppFirebaseRepository
 import com.example.contentnote.database.room.AppRoomDatabase
 import com.example.contentnote.database.room.repository.RoomRepository
 import com.example.contentnote.model.Note
+import com.example.contentnote.utils.Constants
+import com.example.contentnote.utils.DB_TYPE
 import com.example.contentnote.utils.REPOSITORY
 import com.example.contentnote.utils.TYPE_FIREBASE
 import com.example.contentnote.utils.TYPE_ROOM
@@ -27,26 +29,32 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 onSuccess()
             }
 
-            TYPE_FIREBASE ->{
+            TYPE_FIREBASE -> {
                 REPOSITORY = AppFirebaseRepository()
-                REPOSITORY.connectToDatabase({onSuccess()}, {})
+                REPOSITORY.connectToDatabase({ onSuccess() }, {})
             }
         }
     }
 
-    fun addNote(note: Note, onSuccess: () -> Unit){
-        viewModelScope.launch(Dispatchers.IO){
-            REPOSITORY.create(note = note){
-                viewModelScope.launch(Dispatchers.Main){
-                    onSuccess()
-                }
+
+    fun signOut(onSuccess: () -> Unit) {
+        when (DB_TYPE.value) {
+            TYPE_FIREBASE,
+            TYPE_ROOM -> {
+                REPOSITORY.signOut()
+                DB_TYPE.value = Constants.Keys.EMPTY
+                onSuccess()
+            }
+
+            else -> {
+                Log.d("checkData", "signOut")
             }
         }
     }
 
-    fun updateNote(note: Note, onSuccess: () -> Unit){
-        viewModelScope.launch(Dispatchers.IO){
-            REPOSITORY.update(note = note){
+    fun addNote(note: Note, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            REPOSITORY.create(note = note) {
                 viewModelScope.launch(Dispatchers.Main) {
                     onSuccess()
                 }
@@ -54,9 +62,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun deleteNote(note: Note, onSuccess: () -> Unit){
-        viewModelScope.launch(Dispatchers.IO){
-            REPOSITORY.delete(note = note){
+    fun updateNote(note: Note, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            REPOSITORY.update(note = note) {
+                viewModelScope.launch(Dispatchers.Main) {
+                    onSuccess()
+                }
+            }
+        }
+    }
+
+    fun deleteNote(note: Note, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            REPOSITORY.delete(note = note) {
                 viewModelScope.launch(Dispatchers.Main) {
                     onSuccess()
                 }

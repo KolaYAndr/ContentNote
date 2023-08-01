@@ -60,7 +60,11 @@ fun MainScreen(navController: NavHostController, mainViewModel: MainViewModel) {
         if (notes != null) {
             LazyColumn {
                 items(items = notes, key = { note ->
-                    note.id
+                    when (DB_TYPE.value) {
+                        TYPE_ROOM -> note.id
+                        TYPE_FIREBASE -> note.firebaseId
+                        else -> {}
+                    }
                 }) { note ->
                     NoteItem(note, navController)
                 }
@@ -71,7 +75,7 @@ fun MainScreen(navController: NavHostController, mainViewModel: MainViewModel) {
 
 @Composable
 private fun NoteItem(note: Note, navController: NavHostController) {
-    val noteId = when(DB_TYPE){
+    val noteId = when (DB_TYPE.value) {
         TYPE_FIREBASE -> note.firebaseId
         TYPE_ROOM -> note.id
         else -> Constants.Keys.EMPTY

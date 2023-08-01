@@ -53,7 +53,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun NoteScreen(navController: NavHostController, mainViewModel: MainViewModel, noteId: String?) {
     val notes = mainViewModel.readAllNotes().observeAsState(listOf()).value
-    val note = when (DB_TYPE) {
+    val note = when (DB_TYPE.value) {
         TYPE_ROOM -> {
             notes.firstOrNull { it.id == noteId?.toInt() } ?: Note()
         }
@@ -151,7 +151,7 @@ fun NoteScreen(navController: NavHostController, mainViewModel: MainViewModel, n
     ) {
         val paddingValues = it
         Column(
-            verticalArrangement = Arrangement.SpaceAround,
+            verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
         ) {
@@ -191,6 +191,7 @@ fun NoteScreen(navController: NavHostController, mainViewModel: MainViewModel, n
                         navController.navigate(NavRoute.Main.route)
                     }
                 },
+                modifier = Modifier.padding(bottom = 16.dp)
             ) {
                 Text(
                     text = Constants.Keys.DELETE_NOTE,
