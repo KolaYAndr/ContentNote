@@ -1,6 +1,8 @@
 # Pet-project приложение для записок
 
-## Технологии:
+## Технологии и архитектура
+* MVVM
+* ViemModel Factory
 * Jetpack Compose
 * Compose Navigation
 * Room Database
